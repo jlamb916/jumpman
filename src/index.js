@@ -1,5 +1,5 @@
 // module.import { randomColor } from './utils'
-
+"use strict" //code will be validated more strictly - can't have undeclared var's ect
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
@@ -217,8 +217,9 @@ function setBackground() {
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
+    c.fillStyle = 'black';
+    c.fillText(`${mouse.x}, ${mouse.y}`, mouse.x, mouse.y);
 
-    c.fillText(`${mouse.x}, ${mouse.y}`, mouse.x, mouse.y)
     setBackground()
     // MoveCircles(5);
     // player.draw();
