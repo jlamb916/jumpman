@@ -34,7 +34,6 @@ addEventListener('click', () => {
 })
 
 addEventListener("keydown", (e) => {
-    console.log(e.keyCode);
     keys[e.keyCode] = true;
 });
 
@@ -57,7 +56,7 @@ class Ball {
         this.mass = 1;
         this.isJumping = false;
         this.isFalling = false;
-        this.jumpspeed = 0;
+        this.jumpSpeed = 0;
         this.gravity = 0;
     }
 
@@ -91,6 +90,7 @@ class MovingBall extends Ball {
     bounce () {
         // console.log('jump')
         if (!this.isJumping && !this.isFalling) {
+            console.log('bounce');
             this.gravity = 0;
             this.jumpSpeed = 27;
             this.isJumping = true;
@@ -98,7 +98,19 @@ class MovingBall extends Ball {
     }
 
     checkJump () {
-        this.y -= this.jumpSpeed;
+        // if ball is below canvas height, jump normal, else move platform up
+        if (this.y > canvas.height * 0.2) {
+            this.y -= this.jumpSpeed;
+        } else {
+            platforms.forEach((platform) => {
+                platform.y += this.jumpSpeed;
+                // if platform is above canvas height, generate a new one
+                if (platform.y > canvas.height) {
+                    platform.x = Math.random() * (canvas.width - platformWidth);
+                    platform.y = platform.y - canvas.height;
+                }
+            })
+        }
         this.jumpSpeed -= 1;
         if (this.jumpSpeed == 0) {
             this.isJumping = false;
@@ -108,7 +120,6 @@ class MovingBall extends Ball {
     }
 
     checkFall () {
-
         if (this.y < canvas.height - this.radius) {
             this.y += this.gravity;
             this.gravity += 1;
@@ -127,7 +138,6 @@ class MovingBall extends Ball {
     update() {
                //start the bounce
                this.bounce();
-
                //check the balls status
                if (ball2.isJumping) ball2.checkJump();
                if (ball2.isFalling) ball2.checkFall();
@@ -171,47 +181,10 @@ const getDistance = (x1, y1, x2, y2) => {
     return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 }
 
-var howManyCircles = 10, circles = [];
-
-for (var i = 0; i < howManyCircles; i++)
-    circles.push([Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 100, Math.random() / 2]);
-//add information about circles into
-//the 'circles' Array. It is x & y positions, 
-//radius from 0-100 and transparency 
-//from 0-0.5 (0 is invisible, 1 no transparency)
-
-var DrawCircles = function () {
-    for (var i = 0; i < howManyCircles; i++) {
-        c.fillStyle = 'rgba(255, 255, 255, ' + circles[i][3] + ')';
-        //white color with transparency in rgba
-        c.beginPath();
-        c.arc(circles[i][0], circles[i][1], circles[i][2], 0, Math.PI * 2, true);
-        //arc(x, y, radius, startAngle, endAngle, anticlockwise)
-        //circle has always PI*2 end angle
-        c.closePath();
-        c.fill();
-    }
-};
-
-var MoveCircles = function (deltaY) {
-    for (var i = 0; i < howManyCircles; i++) {
-        if (circles[i][1] - circles[i][2] > canvas.height) {
-            //the circle is under the screen so we change
-            //informations about it 
-            circles[i][0] = Math.random() * canvas.width;
-            circles[i][2] = Math.random() * 100;
-            circles[i][1] = 0 - circles[i][2];
-            circles[i][3] = Math.random() / 2;
-        } else {
-            //move circle deltaY pixels down
-            circles[i][1] += deltaY;
-        }
-    }
-};
 
 // Set background
 function setBackground() {
-    c.fillStyle = '#d0e7f9';
+    c.fillStyle = "#d0e7f9";
     c.beginPath();
     c.rect(0, 0, canvas.width, canvas.height);
     c.closePath();
@@ -231,6 +204,7 @@ class Platform {
     }
     
     onCollide (ball) {
+        console.log('collide');
         ball.fallStop();
     }
 
@@ -240,13 +214,13 @@ class Platform {
     };
 
 };
-
+ //  400 < x < 480 &&    200 < y < 250
 const checkCollision = (object) => {
     platforms.forEach(platform => {
-        if ((object.isFalling) && (object.x < platform.x + platformWidth)
-            && (object.x + object.radius > platform.x)
-            && (object.y + object.radius > platform.y)
-            && (object.y + object.radius < platform.y + platformHeight)) {
+        if ((object.isFalling) && (object.x <= platform.x + platformWidth)
+            && (object.x >= platform.x)
+            && (object.y + object.radius >= platform.y)
+            && (object.y + object.radius <= platform.y + platformHeight)) {
                 platform.onCollide(object);
             }
     })
