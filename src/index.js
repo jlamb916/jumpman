@@ -82,6 +82,17 @@ class Ball {
 
 }
 
+ function wrap(x, max) {
+     console.log(max);
+    if (x < 0) {
+    return max - (x % max);
+    } else if (x > max) {
+    return x % max;
+    } else {
+    return x;
+    }
+}
+
 class MovingBall extends Ball {
     constructor(x, y, dy, dx, radius, color) {
         super(x, y, dy, dx, radius, color);
@@ -138,9 +149,10 @@ class MovingBall extends Ball {
     update() {
                //start the bounce
                this.bounce();
+               
                //check the balls status
-               if (ball2.isJumping) ball2.checkJump();
-               if (ball2.isFalling) ball2.checkFall();
+               if (this.isJumping) this.checkJump();
+               if (this.isFalling) this.checkFall();
 
                //check every frame to see if the ball collides with a platform
                checkCollision(ball2);
@@ -154,6 +166,10 @@ class MovingBall extends Ball {
                  this.velocity.x = -10;
                } else {
                  this.velocity.x = 0;
+               }
+               
+               if (this.x < 0 || this.x > canvas.width) {
+                   this.x = wrap(this.x, canvas.width);
                }
                this.x += this.velocity.x;
                this.draw();
