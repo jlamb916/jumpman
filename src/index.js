@@ -1,5 +1,6 @@
-// module.import { randomColor } from './utils'
-"use strict" //code will be validated more strictly - can't have undeclared var's ect
+//code will be validated more strictly - can't have undeclared var's ect
+"use strict" 
+
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
@@ -25,7 +26,6 @@ addEventListener('mousemove', (event) => {
 addEventListener('resize', () => {
     canvas.width = innerWidth
     canvas.height = innerHeight
-
     init()
 })
 
@@ -33,53 +33,10 @@ addEventListener('click', () => {
     init();
 })
 
-function rotate(dx, dy, angle) {
-    const rotatedVelocities = {
-        x: dx * Math.cos(angle) - dy * Math.sin(angle),
-        y: dx * Math.sin(angle) + dy * Math.cos(angle)
-    };
-
-    return rotatedVelocities;
-}
 
 
-function resolveCollision(particle, otherParticle) {
-    const xVelocityDiff = particle.dx - otherParticle.dx;
-    const yVelocityDiff = particle.dy - otherParticle.dy;
 
-    const xDist = otherParticle.x - particle.x;
-    const yDist = otherParticle.y - particle.y;
 
-    // Prevent accidental overlap of particles
-    if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
-
-        // Grab angle between the two colliding particles
-        const angle = -Math.atan2(otherParticle.y - particle.y, otherParticle.x - particle.x);
-
-        // Store mass in var for better readability in collision equation
-        const m1 = particle.mass;
-        const m2 = otherParticle.mass;
-
-        // Velocity before equation
-        const u1 = rotate(particle.dx, particle.dy, angle);
-        const u2 = rotate(otherParticle.dx, otherParticle.dy, angle);
-
-        // Velocity after 1d collision equation
-        const v1 = { x: u1.x * (m1 - m2) / (m1 + m2) + u2.x * 2 * m2 / (m1 + m2), y: u1.y };
-        const v2 = { x: u2.x * (m1 - m2) / (m1 + m2) + u1.x * 2 * m2 / (m1 + m2), y: u2.y };
-
-        // Final velocity after rotating axis back to original location
-        const vFinal1 = rotate(v1, -angle);
-        const vFinal2 = rotate(v2, -angle);
-
-        // Swap particle velocities for realistic bounce effect
-        particle.dx = vFinal1.x;
-        particle.dy = vFinal1.y;
-
-        otherParticle.dx = vFinal2.x;
-        otherParticle.dy = vFinal2.y;
-    }
-}
 
 // Objects
 class Ball {
@@ -93,6 +50,10 @@ class Ball {
         this.radius = radius
         this.color = color;
         this.mass = 1;
+        this.isJumping = false;
+        this.isFalling = false;
+        this.jumpspeed = 0;
+        this.gravity = 0;
     }
 
     draw() {
@@ -122,16 +83,54 @@ class MovingBall extends Ball {
         super(x, y, dy, dx, radius, color);
     }
 
-    update() {
-
-        //gives off impression of a bouncing ball
-        if (this.y + this.radius > canvas.height) {
-            this.velocity.y = -this.velocity.y * friction;
-        } else {
-            this.velocity.y += gravity;
+    bounce () {
+        console.log('jump')
+        if (!this.isJumping && !this.isFalling) {
+            this.gravity = 0;
+            this.jumpSpeed = 27;
+            this.isJumping = true;
         }
+    }
 
-        // move balls x coords toward mouse
+    checkJump () {
+        this.y -= this.jumpSpeed;
+        this.jumpSpeed -= 1;
+        if (this.jumpSpeed == 0) {
+            this.isJumping = false;
+            this.isFalling = true;
+            this.gravity = 1;
+        }
+    }
+
+    checkFall () {
+
+        if (this.y < canvas.height - this.radius) {
+            this.y += this.gravity;
+            this.gravity += 1;
+        } else {
+             this.fallStop();
+        }
+    }
+
+    fallStop () {
+        console.log('stopfall')
+        this.isFalling = false;
+        this.gravity = 0;
+        this.bounce();
+    }
+
+    update() {
+        //start the bounce
+        this.bounce();
+
+        //check the balls status
+        if (ball2.isJumping) ball2.checkJump();
+        if (ball2.isFalling) ball2.checkFall();
+        
+        //check every frame to see if the ball collides with a platform
+        checkCollision(ball2);
+
+        // mouse movement
         if (this.x + this.radius < mouse.x) {
             this.velocity.x = 10;
         } else if (this.x - this.radius > mouse.x) {
@@ -139,7 +138,6 @@ class MovingBall extends Ball {
         } else {
             this.velocity.x = 0;
         }
-        this.y += this.velocity.y;
         this.x += this.velocity.x;
         this.draw()
     }
@@ -147,7 +145,6 @@ class MovingBall extends Ball {
 
 
 // Implementation
-let object;
 let ball;
 let ball2;
 
@@ -155,6 +152,8 @@ let ball2;
 function init() {
     ball = new Ball(canvas.width / 2, canvas.height / 2, 3, 2, 30, colors[3]);
     ball2 = new MovingBall(canvas.width / 3, canvas.height / 2, 3, 2, 30, colors[2]);
+    generatePlatforms();
+
 }
 
 // get distance between 2 points + pow
@@ -213,23 +212,77 @@ function setBackground() {
 }
 
 
-// Animation Loop
+let numOfPlatforms = 11;
+let platforms = [];
+let platformWidth = 100;
+let platformHeight = 20;
+
+class Platform {
+    constructor (x, y) {
+        this.x = Math.floor(x);
+        this.y = y;
+    }
+    
+    onCollide (ball) {
+        ball.fallStop();
+    }
+
+    draw () {
+        c.fillStyle = "#a57d50";
+        c.fillRect(this.x, this.y, platformWidth, platformHeight);
+    };
+
+};
+
+const checkCollision = (object) => {
+    platforms.forEach(platform => {
+        if ((object.isFalling) && (object.x < platform.x + platformWidth)
+            && (object.x + object.radius > platform.x)
+            && (object.y + object.radius > platform.y)
+            && (object.y + object.radius < platform.y + platformHeight)) {
+                platform.onCollide(object);
+            }
+    })
+}
+
+
+const generatePlatforms = () => {
+  let position = 0;
+  for (let i = 0; i < numOfPlatforms; i++) {
+    
+    platforms[i] = new Platform(
+      Math.random() * (canvas.width - platformWidth),
+      position, 
+    );
+    
+    if (position < canvas.height - platformHeight)
+      position += Math.floor((canvas.height / numOfPlatforms));
+  }
+  //and Y position interval
+};
+
+
+
+
+
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
+    
+    setBackground();
+    
+    //x,y coords on mouse
     c.fillStyle = 'black';
     c.fillText(`${mouse.x}, ${mouse.y}`, mouse.x, mouse.y);
+        
+    platforms.forEach((platform) => { platform.draw(c); });
 
-    setBackground()
-    // MoveCircles(5);
-    // player.draw();
-    DrawCircles();
+    // DrawCircles();
     ball.update();
+    
     ball2.update();
-
     if (getDistance(ball.x, ball.y, ball2.x, ball2.y) < ball.radius + ball2.radius) {
-        resolveCollision(ball, ball2);
-        console.log('bam')
+        console.log('Collide!')
     }
 
 }
@@ -245,3 +298,4 @@ gameStart();
 //testing
 window.ball = ball;
 window.ball2 = ball2;
+window.platforms = platforms;
