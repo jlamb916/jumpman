@@ -11,7 +11,7 @@ const mouse = {
     x: undefined,
     y: undefined
 }
-
+const keys = [];
 const gravity = 1;
 const friction = 1;
 
@@ -33,9 +33,14 @@ addEventListener('click', () => {
     init();
 })
 
+addEventListener("keydown", (e) => {
+    console.log(e.keyCode);
+    keys[e.keyCode] = true;
+});
 
-
-
+addEventListener("keyup", (e) => {
+    keys[e.keyCode] = false;
+});
 
 
 // Objects
@@ -84,7 +89,7 @@ class MovingBall extends Ball {
     }
 
     bounce () {
-        console.log('jump')
+        // console.log('jump')
         if (!this.isJumping && !this.isFalling) {
             this.gravity = 0;
             this.jumpSpeed = 27;
@@ -113,34 +118,36 @@ class MovingBall extends Ball {
     }
 
     fallStop () {
-        console.log('stopfall')
+        // console.log('stopfall')
         this.isFalling = false;
         this.gravity = 0;
         this.bounce();
     }
 
     update() {
-        //start the bounce
-        this.bounce();
+               //start the bounce
+               this.bounce();
 
-        //check the balls status
-        if (ball2.isJumping) ball2.checkJump();
-        if (ball2.isFalling) ball2.checkFall();
-        
-        //check every frame to see if the ball collides with a platform
-        checkCollision(ball2);
+               //check the balls status
+               if (ball2.isJumping) ball2.checkJump();
+               if (ball2.isFalling) ball2.checkFall();
 
-        // mouse movement
-        if (this.x + this.radius < mouse.x) {
-            this.velocity.x = 10;
-        } else if (this.x - this.radius > mouse.x) {
-            this.velocity.x = -10
-        } else {
-            this.velocity.x = 0;
-        }
-        this.x += this.velocity.x;
-        this.draw()
-    }
+               //check every frame to see if the ball collides with a platform
+               checkCollision(ball2);
+
+               // mouse movement
+               // this.x + this.radius < mouse.x;
+               //this.x - this.radius > mouse.x ||
+               if (keys[68] || keys[39]) {
+                 this.velocity.x = 10;
+               } else if (keys[65] || keys[37]) {
+                 this.velocity.x = -10;
+               } else {
+                 this.velocity.x = 0;
+               }
+               this.x += this.velocity.x;
+               this.draw();
+             }
 }
 
 
@@ -282,7 +289,7 @@ function animate() {
     
     ball2.update();
     if (getDistance(ball.x, ball.y, ball2.x, ball2.y) < ball.radius + ball2.radius) {
-        console.log('Collide!')
+        // console.log('Collide!')
     }
 
 }
