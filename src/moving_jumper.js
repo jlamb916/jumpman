@@ -1,7 +1,8 @@
 import Util from './util';
 import Ball from './jumper';
 import { checkCollision } from './platform';
-import { canvas, c, keys } from './index'
+import { canvas, c, keys} from './index'
+
 
 let platformWidth = 100;
 let platformHeight = 20;
@@ -9,6 +10,7 @@ let platformHeight = 20;
 class MovingBall extends Ball {
   constructor(x, y, dy, dx, radius, color) {
     super(x, y, dy, dx, radius, color);
+    this.score = 0;
   }
 
   jump() {
@@ -21,11 +23,12 @@ class MovingBall extends Ball {
     }
   }
 
-  checkJump() {
+  checkJump(platforms) {
     // if ball is below canvas height, jump normal, else move platform up
     if (this.y > canvas.height * 0.2) {
       this.y -= this.jumpSpeed;
     } else {
+      this.score += 1;
       platforms.forEach((platform) => {
         platform.y += this.jumpSpeed;
         // if platform is above canvas height, generate a new one
@@ -59,16 +62,28 @@ class MovingBall extends Ball {
     this.jump();
   }
 
-  update() {
+  draw() {
+    c.fillStyle = "Black";
+    c.font = 'bold 32px "Sans Serif"';
+    c.fillText(this.score, 10, 30);
+
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    c.fillStyle = this.color;
+    c.fill();
+    c.stroke();
+    c.closePath();
+  }
+
+  update(platforms) {
     //start the jump
     this.jump();
 
     //check the balls status
-    if (this.isJumping) this.checkJump();
+    if (this.isJumping) this.checkJump(platforms);
     if (this.isFalling) this.checkFall();
 
     //check every frame to see if the ball collides with a platform
-    checkCollision(this);
 
     // mouse movement
     // this.x + this.radius < mouse.x;
@@ -85,6 +100,8 @@ class MovingBall extends Ball {
       this.x = Util.wrap(this.x, canvas.width);
     }
     this.x += this.velocity.x;
+    checkCollision(this);
+
     this.draw();
   }
 }

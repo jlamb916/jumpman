@@ -1,5 +1,4 @@
 import Util from './util'
-import Ball from './jumper';
 import MovingBall from './moving_jumper';
 import { generatePlatforms } from './platform';
 
@@ -10,15 +9,15 @@ import { generatePlatforms } from './platform';
 export const canvas = document.querySelector('canvas')
 export const c = canvas.getContext('2d')
 
-canvas.width = (800);
-canvas.height = (600);
+canvas.width = 800;
+canvas.height = 600;
 
 const mouse = {
     x: undefined,
     y: undefined
 }
-export const keys = [];
 
+export const keys = [];
 
 const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']
 
@@ -28,14 +27,9 @@ addEventListener('mousemove', (event) => {
     mouse.y = event.clientY
 })
 
-addEventListener('resize', () => {
-    canvas.width = innerWidth
-    canvas.height = innerHeight
-    init()
-})
-
 addEventListener('click', () => {
-    init();
+    const game = new Game();
+    game.gameStart();
 })
 
 addEventListener("keydown", (e) => {
@@ -46,59 +40,95 @@ addEventListener("keyup", (e) => {
     keys[e.keyCode] = false;
 });
 
-// Implementation
-let ball;
-let ball2;
-let platforms;
+class Game {
+  constructor() {
+    this.state = true;
+    this.ball = undefined;
+    this.platforms = [];
 
-// initialize balls
-function init() {
-    ball = new Ball(canvas.width / 2, canvas.height / 2, 3, 2, 30, colors[3]);
-    ball2 = new MovingBall(canvas.width / 3, canvas.height / 2, 3, 2, 30, colors[2]);
-    platforms = generatePlatforms();
+    this.gameLoop = this.gameLoop.bind(this);
+  }
 
-}
+  init() {
+    this.ball = new MovingBall(
+      canvas.width / 3,
+      canvas.height / 2,
+      3,
+      2,
+      30,
+      colors[2]
+    );
+    this.platforms = generatePlatforms();
+  }
 
-
-// Set background
-function setBackground() {
+  setBackground() {
     c.fillStyle = "#d0e7f9";
     c.beginPath();
     c.rect(0, 0, canvas.width, canvas.height);
     c.closePath();
     c.fill();
-}
+  }
 
+  gameStart() {
+    this.init();
+    this.gameLoop();
+  }
 
-function animate() {
-    requestAnimationFrame(animate)
-    c.clearRect(0, 0, canvas.width, canvas.height)
-    
-    setBackground();
-    
-    //x,y coords on mouse
-    c.fillStyle = 'black';
-    c.fillText(`${mouse.x}, ${mouse.y}`, mouse.x, mouse.y);
-        
-    platforms.forEach((platform) => { 
-        platform.draw(c); 
+  gameLoop() {
+    requestAnimationFrame(this.gameLoop);
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    this.setBackground();
+    this.platforms.forEach((platform) => {
+      platform.draw(c);
     });
-
-    // DrawCircles();
-    // ball.update();
-    ball2.update();
-
+    this.ball.update(this.platforms);
+  }
 }
 
-function gameStart() {
-    init()
-    animate()
-}
-
-gameStart();
 
 
-//testing
-window.ball = ball;
-window.ball2 = ball2;
-window.platforms = platforms;
+// // Implementation
+// let ball2;
+// let platforms;
+
+// // initialize balls
+// function init() {
+//     ball2 = new MovingBall(canvas.width / 3, canvas.height / 2, 3, 2, 30, colors[2]);
+//     platforms = generatePlatforms();
+
+// }
+
+
+// // Set background
+// function setBackground() {
+//     c.fillStyle = "#d0e7f9";
+//     c.beginPath();
+//     c.rect(0, 0, canvas.width, canvas.height);
+//     c.closePath();
+//     c.fill();
+// }
+
+// function animate() {
+//     requestAnimationFrame(animate)
+//     c.clearRect(0, 0, canvas.width, canvas.height)
+
+//     setBackground();
+
+//     platforms.forEach((platform) => { 
+//         platform.draw(c); 
+//     });
+//     ball2.update();
+
+
+// }
+
+// function gameStart() {
+//     init()
+//     animate()
+// }
+
+
+// //testing
+// window.ball2 = ball2;
+// window.platforms = platforms;
+// window.score = score;
