@@ -2,7 +2,7 @@ import Util from './util';
 import Ball from './jumper';
 import { checkCollision } from './platform';
 import { canvas, c, keys} from './index'
-
+import { game } from './index';
 
 let platformWidth = 100;
 let platformHeight = 20;
@@ -10,7 +10,6 @@ let platformHeight = 20;
 class MovingBall extends Ball {
   constructor(x, y, dy, dx, radius, color) {
     super(x, y, dy, dx, radius, color);
-    this.score = 0;
   }
 
   jump() {
@@ -28,7 +27,7 @@ class MovingBall extends Ball {
     if (this.y > canvas.height * 0.2) {
       this.y -= this.jumpSpeed;
     } else {
-      this.score += 1;
+      game.score += 1;
       platforms.forEach((platform) => {
         platform.y += this.jumpSpeed;
         // if platform is above canvas height, generate a new one
@@ -51,7 +50,10 @@ class MovingBall extends Ball {
       this.y += this.gravity;
       this.gravity += 1;
     } else {
-      this.fallStop();
+      if (game.score === 0) {
+        this.fallStop();
+      }
+      game.gameOver();
     }
   }
 
@@ -62,11 +64,14 @@ class MovingBall extends Ball {
     this.jump();
   }
 
-  draw() {
+  score() {
     c.fillStyle = "Black";
-    c.font = 'bold 32px "Sans Serif"';
-    c.fillText(this.score, 10, 30);
+    c.font = 'bold 36px "Ariel"';
+    c.fillText(game.score, 34, 30);
+  }
 
+  draw() {
+    this.score()
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     c.fillStyle = this.color;
