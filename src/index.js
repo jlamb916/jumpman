@@ -10,8 +10,8 @@ import StartScreen from './start_screen';
 export const canvas = document.querySelector('canvas')
 export const c = canvas.getContext('2d')
 
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 700;
+canvas.height = 550;
 
 const mouse = {
     x: undefined,
@@ -57,6 +57,8 @@ class Game {
     this.gameLoop();
   }
 
+  
+
   gameLoop() {
     if (this.state === true) {
         requestAnimationFrame(this.gameLoop);
@@ -82,6 +84,7 @@ class Game {
         c.fillText("Click to Start a New Game", canvas.width / 2, 500);
         c.closePath();
     }, 100);
+    document.addEventListener('click', eventStartGame);
     }
 }
 
@@ -89,16 +92,22 @@ export const start = new StartScreen(c, canvas);
 export let game;
 start.startGame();
 
+
 // Event Listeners
 document.addEventListener('mousemove', (event) => {
     mouse.x = event.clientX
     mouse.y = event.clientY
 })
 
-document.addEventListener('click', () => {
-    game = new Game();
-    game.gameStart();
-});
+const eventStartGame = () => {
+  game = new Game();
+  game.gameStart();
+  document.removeEventListener('click', eventStartGame);
+}
+
+document.addEventListener('click', eventStartGame);
+
+
 
 document.addEventListener("keydown", (e) => {
     keys[e.keyCode] = true;

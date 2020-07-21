@@ -1,0 +1,54 @@
+     h1 {
+            margin: 20px;
+        }
+        .list {
+            color: white;
+        }
+        .nav {
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        body {
+            margin: 0;
+            background-color: black;
+        }
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main-container {
+            display: flex;
+            
+            
+        }
+
+        .controls {
+            border: white solid 1px; 
+            margin: 30px;
+            padding-bottom: 50px;
+        }
+
+        .left-container {
+            text-align: center;
+            margin: 50px;
+            width: 17%;
+            height: 500px;
+            border: white solid 1px;
+            box-sizing: border-box;
+        }   
+        .control {
+            color: white;
+            padding: 15px;
+        }
+
+        .right-container {
+            text-align: center;
+            margin: 50px;
+            width: 17%;
+            height: 500px;
+            border: white solid 1px;
+            box-sizing: border-box;
+        }
