@@ -38,7 +38,7 @@ export const checkCollision = (object) => {
   });
 };
 
-export const generatePlatforms = () => {
+export const createPlatforms = () => {
   let position = 0;
   for (let i = 0; i < numOfPlatforms; i++) {
     platforms[i] = new Platform(
