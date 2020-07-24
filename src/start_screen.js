@@ -2,7 +2,7 @@ import {c, canvas} from './index';
 
 class StartScreen {
 
-  startGame() {
+  startGameScreen() {
     c.fillStyle = "#d0e7f9";
     c.beginPath();
     c.rect(0, 0, canvas.width, canvas.height);

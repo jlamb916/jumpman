@@ -13,7 +13,6 @@ class Platform {
     }
     
     onCollide (ball) {
-        console.log('collide');
         ball.fallStop();
     }
 

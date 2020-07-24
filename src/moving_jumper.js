@@ -13,9 +13,7 @@ class MovingBall extends Ball {
   }
 
   jump() {
-    // console.log('jump')
     if (!this.isJumping && !this.isFalling) {
-      console.log("jump");
       this.gravity = 0;
       this.jumpSpeed = 27;
       this.isJumping = true;
@@ -58,7 +56,6 @@ class MovingBall extends Ball {
   }
 
   fallStop() {
-    // console.log('stopfall')
     this.isFalling = false;
     this.gravity = 0;
     this.jump();
