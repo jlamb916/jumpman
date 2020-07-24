@@ -3,6 +3,7 @@ import Ball from './jumper';
 import { checkCollision } from './platform';
 import { canvas, c, keys} from './index'
 import { game } from './index';
+import {moveClouds} from './clouds';
 
 let platformWidth = 100;
 let platformHeight = 20;
@@ -20,12 +21,20 @@ class MovingBall extends Ball {
     }
   }
 
-  checkJump(platforms) {
+  checkJump(platforms, clouds) {
     // if ball is below canvas height, jump normal, else move platform up
-    if (this.y > canvas.height * 0.2) {
+    if (this.y > canvas.height * 0.3) {
       this.y -= this.jumpSpeed;
     } else {
       game.score += 1;
+      clouds.forEach((cloud) => {
+        if (cloud[1] > canvas.height) {
+          cloud[0] = Math.random() * canvas.width;
+          cloud[1] = -5;
+        } else {
+          cloud[1] += this.jumpSpeed;
+        }
+      })
       platforms.forEach((platform) => {
         platform.y += this.jumpSpeed;
         // if platform is above canvas height, generate a new one
@@ -77,12 +86,12 @@ class MovingBall extends Ball {
     c.closePath();
   }
 
-  update(platforms) {
+  update(platforms, clouds) {
     //start the jump
     this.jump();
 
     //check the balls status
-    if (this.isJumping) this.checkJump(platforms);
+    if (this.isJumping) this.checkJump(platforms, clouds);
     if (this.isFalling) this.checkFall();
 
     //check every frame to see if the ball collides with a platform

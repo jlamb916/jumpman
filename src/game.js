@@ -16,7 +16,6 @@ class Game {
         this.score = 0;
         this.gameLoop = this.gameLoop.bind(this);
         this.gameStart = this.gameStart.bind(this);
-
     }
 
     init() {
@@ -42,6 +41,8 @@ class Game {
         this.clouds = createClouds();
     }
 
+
+
     setBackground() {
         c.fillStyle = "#d0e7f9";
         c.beginPath();
@@ -49,9 +50,9 @@ class Game {
         c.closePath();
         c.fill();
         for (let i = 0; i < this.clouds.length; i++) {
-            console.log(this.clouds[i]);
             renderCloud(this.clouds[i][0], this.clouds[i][1]);
         }
+
     }
 
     gameStart() {
@@ -69,7 +70,7 @@ class Game {
         this.platforms.forEach((platform) => {
             platform.draw(c);
         });
-        this.ball.update(this.platforms);
+        this.ball.update(this.platforms, this.clouds);
     }
 
     gameOver() {

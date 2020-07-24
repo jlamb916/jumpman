@@ -1,6 +1,7 @@
 import {c, canvas} from './index';
 
 
+
 export const createClouds = () => {
         let howManyClouds = 6;
         let clouds = [];
@@ -10,6 +11,16 @@ export const createClouds = () => {
         return clouds
 }
 
+export const moveClouds = () => {
+    for (let i = 0; i < this.clouds.length; i++) {
+        if (this.clouds[i][1] > canvas.height) {
+            this.clouds[i][0] = Math.random() * canvas.width;
+            this.clouds[i][1] = 0 - ((this.clouds[i][0] + this.clouds[i][1]) / 2);
+        } else {
+            this.clouds[i][1] += 5;
+        }
+    }
+}
 
 export const renderCloud = (startX, startY) => {
         c.beginPath()
