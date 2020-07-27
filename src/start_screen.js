@@ -10,16 +10,21 @@ class StartScreen {
     c.fill();
     c.beginPath();
     c.fillStyle = "Black";
-    c.font = 'bold 36px "Ariel"';
+    c.font = 'bold 36px "Courier New"';
     c.textAlign = "center";
     c.fillText("READY TO JUMP?", canvas.width / 2, 200);
     c.fill();
     c.closePath();
     c.beginPath();
     c.fillStyle = "Black";
-    c.font = 'bold 36px "Ariel"';
+    c.font = 'bold 30px "Courier New"';
     c.textAlign = "center";
-    c.fillText("Click to Start", canvas.width / 2, 300);
+    c.fillText("to Start Game", canvas.width / 2, 350);
+    c.fill();
+    c.fillStyle = "Black";
+    c.font = 'bold 30px "Courier New"';
+    c.textAlign = "center";
+    c.fillText("[Enter] or [Spacebar]", canvas.width / 2, 300);
     c.fill();
     c.closePath();
   }

@@ -1,4 +1,4 @@
-import { c, canvas, keys, eventStartGame} from './index';
+import { c, canvas, keys, handleKeyDown} from './index';
 import MovingBall from './moving_jumper';
 import { createPlatforms } from './platform';
 import {createClouds, renderCloud} from './clouds';
@@ -41,8 +41,6 @@ class Game {
         this.clouds = createClouds();
     }
 
-
-
     setBackground() {
         c.fillStyle = "#d0e7f9";
         c.beginPath();
@@ -52,7 +50,6 @@ class Game {
         for (let i = 0; i < this.clouds.length; i++) {
             renderCloud(this.clouds[i][0], this.clouds[i][1]);
         }
-
     }
 
     gameStart() {
@@ -73,20 +70,25 @@ class Game {
         this.ball.update(this.platforms, this.clouds);
     }
 
+    endScreen () {
+        c.beginPath();
+        c.fillStyle = "Black";
+        c.font = 'bold 36px "Courier New"';
+        c.textAlign = "center";
+        c.fillText("GAME OVER", canvas.width / 2, 200);
+        c.fillText("YOUR SCORE: " + this.score, canvas.width / 2, 300);
+        c.font = 'bold 24px "Courier New"';
+        c.fillText("[Enter] or [Spacebar] to Start a New Game", canvas.width / 2, 500);
+        c.closePath();
+    }
+
     gameOver() {
         this.state = false;
         setTimeout(() => {
-            c.beginPath();
-            c.fillStyle = "Black";
-            c.font = 'bold 36px "Ariel"';
-            c.textAlign = "center";
-            c.fillText("GAME OVER", canvas.width / 2, 200);
-            c.fillText("YOUR SCORE: " + this.score, canvas.width / 2, 300);
-            c.font = 'bold 24px "Ariel"';
-            c.fillText("Click to Start a New Game", canvas.width / 2, 500);
-            c.closePath();
+            this.endScreen();
         }, 100);
-        document.addEventListener('click', eventStartGame);
+        // document.addEventListener('click', eventStartGame);
+        document.addEventListener('keydown', handleKeyDown);
         console.log('hi');
     }
 }

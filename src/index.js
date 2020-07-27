@@ -33,7 +33,16 @@ export const eventStartGame = () => {
   game = new Game();
   game.gameStart();
 
-  document.removeEventListener('click', eventStartGame);
+  // document.removeEventListener('click', eventStartGame);
+  document.removeEventListener('keydown', handleKeyDown);
 }
 
-document.addEventListener('click', eventStartGame);
+export const handleKeyDown = (e) => {
+  if (e.keyCode === 13 || e.keyCode === 32) {
+    console.log(e.keyCode);
+    eventStartGame();
+  }
+}
+
+// document.addEventListener('click', eventStartGame);
+document.addEventListener('keydown', handleKeyDown);
