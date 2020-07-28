@@ -2,6 +2,7 @@ import { c, canvas, keys, handleKeyDown} from './index';
 import MovingBall from './moving_jumper';
 import { createPlatforms } from './platform';
 import {createClouds, renderCloud} from './clouds';
+import Util from './util';
 
 const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']
 
@@ -48,6 +49,11 @@ class Game {
         c.closePath();
         c.fill();
         for (let i = 0; i < this.clouds.length; i++) {
+            if (this.clouds[i][0] < 0 || this.clouds[i][0] > canvas.width) {
+                
+                this.clouds[i][0] = Util.wrap(this.clouds[i][0], canvas.width);
+            }
+            this.clouds[i][0] += 1;
             renderCloud(this.clouds[i][0], this.clouds[i][1]);
         }
     }
@@ -67,6 +73,7 @@ class Game {
         this.platforms.forEach((platform) => {
             platform.draw(c);
         });
+
         this.ball.update(this.platforms, this.clouds);
     }
 

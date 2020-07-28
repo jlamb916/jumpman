@@ -12,13 +12,18 @@ export const createClouds = () => {
 }
 
 export const moveClouds = () => {
+    let vel = [-1, 1]
     for (let i = 0; i < this.clouds.length; i++) {
-        if (this.clouds[i][1] > canvas.height) {
-            this.clouds[i][0] = Math.random() * canvas.width;
-            this.clouds[i][1] = 0 - ((this.clouds[i][0] + this.clouds[i][1]) / 2);
+        if (this.cloud[i][1] > canvas.height) {
+            this.cloud[i][0] = Math.random() * canvas.width;
+            this.cloud[i][1] = 0 - ((this.cloud[i][0] + this.cloud[i][1]) / 2);
         } else {
-            this.clouds[i][1] += 5;
+            this.cloud[i][1] += 5;
         }
+        if (this.cloud[i][0] < 0 || this.cloud[i][0] > canvas.width) {
+            this.cloud[i][0] = Util.wrap(this.cloud[i][0], canvas.width);
+        }
+        this.cloud[i][0] += vel[Math.floor(Math.random() * 2)]
     }
 }
 
