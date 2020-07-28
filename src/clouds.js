@@ -3,7 +3,7 @@ import {c, canvas} from './index';
 
 
 export const createClouds = () => {
-        let howManyClouds = 6;
+        let howManyClouds = 7;
         let clouds = [];
         for (var i = 0; i < howManyClouds; i++) {
             clouds.push([Math.floor(Math.random() * canvas.width), Math.floor(Math.random() * canvas.height)])
