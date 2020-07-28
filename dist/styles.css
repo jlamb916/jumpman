@@ -21,6 +21,7 @@ font-weight: bold;
 body {
 margin: 0;
 background-color: black;
+font-family: myFont;
 }
 .canvas-container {
 display: flex;
@@ -73,5 +74,6 @@ display: flex;
 .footer {
     color: white;
     text-align: center;
-    padding-bottom: 10px;
+    margin-top: 10px;
+    font-size: 18px;
 }

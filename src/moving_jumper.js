@@ -72,8 +72,8 @@ class MovingBall extends Ball {
 
   score() {
     c.fillStyle = "Black";
-    c.font = 'bold 36px "Ariel"';
-    c.fillText(game.score, 34, 30);
+    c.font = 'bold 36px "MyFont';
+    c.fillText(game.score, 34, 38);
   }
 
   draw() {

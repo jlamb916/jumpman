@@ -73,11 +73,11 @@ class Game {
     endScreen () {
         c.beginPath();
         c.fillStyle = "Black";
-        c.font = 'bold 36px "Courier New"';
+        c.font = 'bold 50px "myFont"';
         c.textAlign = "center";
         c.fillText("GAME OVER", canvas.width / 2, 200);
         c.fillText("YOUR SCORE: " + this.score, canvas.width / 2, 300);
-        c.font = 'bold 24px "Courier New"';
+        c.font = 'bold 24px "myFont"';
         c.fillText("[Enter] or [Spacebar] to Start a New Game", canvas.width / 2, 500);
         c.closePath();
     }
