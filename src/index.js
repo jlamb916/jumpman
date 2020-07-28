@@ -33,7 +33,6 @@ export const eventStartGame = () => {
   game = new Game();
   game.gameStart();
 
-  // document.removeEventListener('click', eventStartGame);
   document.removeEventListener('keydown', handleKeyDown);
 }
 
@@ -44,5 +43,4 @@ export const handleKeyDown = (e) => {
   }
 }
 
-// document.addEventListener('click', eventStartGame);
 document.addEventListener('keydown', handleKeyDown);
