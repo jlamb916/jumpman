@@ -1,6 +1,6 @@
 @font-face {
 font-family: myFont;
-src: url(./a-alloy-ink-font/AlloyInk-nRLyO.ttf);
+src: url(./assets/a-alloy-ink-font/AlloyInk-nRLyO.ttf);
 font-weight: bold;
 }
 
@@ -52,9 +52,26 @@ display: flex;
 
 .right-container {
     text-align: center;
-    margin: 50px;
+    margin-left: 25px;
     width: 17%;
-    height: 500px;
-    border: white solid 1px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }   
+
+.github {
+    margin-top: 25px;
+}
+
+.icon {
+    border-radius:  70%;
+    height: 150px;
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.footer {
+    color: white;
+    text-align: center;
+    padding-bottom: 10px;
+}
