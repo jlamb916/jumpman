@@ -10,7 +10,7 @@ font-family: myFont;
 font-size: 60px;
 }           
 .list {
-color: white;
+color:white;
 }
 .nav {
 text-align: center;
@@ -33,9 +33,9 @@ display: flex;
 }
 
 .controls {
-    border: white solid 1px; 
+    /* border: white solid 1px;  */
     margin: 30px;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
 }
 
 .left-container {
@@ -43,12 +43,25 @@ display: flex;
     margin: 50px;
     width: 17%;
     height: 500px;
-    border: white solid 1px;
+    border: white solid 2px;
     box-sizing: border-box;
 }   
 .control {
     color: white;
     padding: 15px;
+    font-size: 25px;
+}
+
+.list {
+    font-size: 20px;
+}
+
+.instructions {
+    color: white;
+    width: 170px;
+    padding: 15px;
+    margin-left: 20px;
+    text-align: center;
 }
 
 .right-container {
@@ -74,6 +87,6 @@ display: flex;
 .footer {
     color: white;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 14px;
     font-size: 18px;
 }
