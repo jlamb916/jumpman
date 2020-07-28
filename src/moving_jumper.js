@@ -23,7 +23,7 @@ class MovingBall extends Ball {
 
   checkJump(platforms, clouds) {
     // if ball is below canvas height, jump normal, else move platform up
-    if (this.y > canvas.height * 0.3) {
+    if (this.y > canvas.height * 0.2) {
       this.y -= this.jumpSpeed;
     } else {
       game.score += 1;

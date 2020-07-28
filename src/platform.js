@@ -1,7 +1,7 @@
 import { canvas, c } from './index';
 
 
-let numOfPlatforms = 11;
+let numOfPlatforms = 9;
 const platforms = [];
 let platformWidth = 100;
 let platformHeight = 20;

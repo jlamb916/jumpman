@@ -1,6 +1,7 @@
 @font-face {
-    font-family: myFont;
-    src: url(./assets/a-alloy-ink-font/AlloyInk-nRLyO.ttf);
+    font-family: 'myFont';
+    src: url(./assets/a-alloy-ink-font/AlloyInk-nRLyO.ttf),
+        url(./assets/a-alloy-ink-font//AlloyInk-lgdWw.otf);
 }
 
 h1 {
@@ -39,7 +40,7 @@ justify-content: center;
 
 .left-container {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 30px; 
     margin-right: 40px;
     height: 500px;
     border: white solid 2px;

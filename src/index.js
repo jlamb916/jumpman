@@ -30,9 +30,10 @@ document.addEventListener('mousemove', (event) => {
 })
 
 export const eventStartGame = () => {
+  start.state = false;
   game = new Game();
   game.gameStart();
-
+  
   document.removeEventListener('keydown', handleKeyDown);
 }
 
