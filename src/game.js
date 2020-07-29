@@ -4,10 +4,6 @@ import { createPlatforms } from './platform';
 import {createClouds, renderCloud} from './clouds';
 import Util from './util';
 
-const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']
-
-
-
 class Game {
     constructor() {
         this.state = true;
@@ -36,7 +32,7 @@ class Game {
             3,
             2,
             30,
-            colors[3]
+            '#FF7F66'
         );
         this.platforms = createPlatforms();
         this.clouds = createClouds();
