@@ -5,6 +5,11 @@
 
 ![alt text](https://github.com/jlamb916/jumpman/blob/master/dist/assets/jumper.gif "jumpergiffy")
 
+## Background
+
+Jumper is a vertical jumping platform game inspired by doodle jump.  The goal of the game is to jump as high as possible without falling off the platform as the game gets increasingly difficult.
+The game was built using vanilla javascript, html, canvas, and css.
+
 ## Features
 
 Main game logic utilizing Game class to store state of the game. Animation renders as long as the game state is true. Clears and rerenders the platforms and objects at each refresh.
@@ -57,10 +62,6 @@ Main jumping and collision logic as well as stdin controlled object movement cal
     this.draw();
   }
  ```
-## Background
-
-Jumper is a vertical jumping platform game inspired by doodle jump.  The goal of the game is to jump as high as possible without falling off the platform as the game gets increasingly difficult.
-The game was built using vanilla javascript, html, canvas, and css.
 
 ## Instructions
 
