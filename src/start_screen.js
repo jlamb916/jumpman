@@ -16,7 +16,6 @@ class StartScreen {
 
   updateStart() {
     if (this.state === true) {
-      console.log('hi')
       requestAnimationFrame(this.updateStart);
     }
     c.clearRect(0, 0, canvas.width, canvas.height);

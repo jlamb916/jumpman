@@ -92,7 +92,6 @@ class Game {
         }, 100);
         // document.addEventListener('click', eventStartGame);
         document.addEventListener('keydown', handleKeyDown);
-        console.log('hi');
     }
 }
 

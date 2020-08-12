@@ -39,7 +39,7 @@ export const eventStartGame = () => {
 
 export const handleKeyDown = (e) => {
   if (e.keyCode === 13 || e.keyCode === 32) {
-    console.log(e.keyCode);
+    .log(e.keyCode);
     eventStartGame();
   }
 }
